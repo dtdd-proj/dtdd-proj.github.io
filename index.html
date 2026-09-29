@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DTDD</title>
+<meta name="description" content="DTDD routes on-policy distillation between standard OPD and teacher-generated recovery using segment-level student-teacher divergence.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+:root{--paper:#ffffff;--ink:#1d2531;--muted:#5d6776;--blue:#0072B2;--orange:#C2540A;--rule:#e2e7ed;--tint:#eaf3fa;--chip:#1d2531;--chip-ink:#ffffff;--code:#f5f7fa;--fig:#ffffff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--paper:#12161c;--ink:#e6eaf0;--muted:#9aa4b2;--blue:#5aaee0;--orange:#e89060;--rule:#2a323d;--tint:#16283a;--chip:#e6eaf0;--chip-ink:#12161c;--code:#1a2028;--fig:#ffffff}}
+:root[data-theme="dark"]{color-scheme:dark;--paper:#12161c;--ink:#e6eaf0;--muted:#9aa4b2;--blue:#5aaee0;--orange:#e89060;--rule:#2a323d;--tint:#16283a;--chip:#e6eaf0;--chip-ink:#12161c;--code:#1a2028;--fig:#ffffff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 "Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;padding-inline:20px}
+main{max-width:960px;margin:0 auto;padding-block:48px 64px}
+.hero{text-align:center;display:grid;gap:18px;justify-items:center}
+h1{font-family:"Source Serif 4",Georgia,serif;font-weight:700;font-size:clamp(28px,4.4vw,44px);line-height:1.15;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 .name{color:var(--blue)}
+.authors{font-size:17px;max-width:860px}
+.authors a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+.authors a:hover{border-bottom-color:var(--blue)}
+.authors span{white-space:nowrap}
+sup{font-size:.68em}
+.affils{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;color:var(--muted);font-size:15px}
+.affils span{display:inline-flex;align-items:center;gap:6px}
+.affils img{height:17px;width:auto}
+.note{font-size:13px;color:var(--muted)}
+.buttons{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--chip);color:var(--chip-ink);border-radius:999px;padding:8px 18px;font-weight:500;font-size:15px;text-decoration:none}
+.btn[aria-disabled="true"]{opacity:.55;cursor:default}
+.btn:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.btn svg{width:16px;height:16px;fill:currentColor}
+figure{margin:0;display:grid;gap:10px}
+figure img{width:100%;height:auto;border-radius:6px;background:var(--fig)}
+figcaption{font-size:14.5px;color:var(--muted);text-align:left}
+figcaption b{color:var(--ink)}
+section{display:grid;gap:18px;padding-top:44px}
+h2{font-size:28px;font-weight:700;margin:0;text-align:center;text-wrap:balance}
+h3{font-size:20px;font-weight:600;margin:10px 0 0;text-wrap:balance}
+p{margin:0;max-width:70ch}
+.prose{display:grid;gap:14px;justify-items:start}
+.center p{margin-inline:auto}
+.abstract p{text-align:justify;hyphens:auto}
+ol.steps{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+ol.steps li{border-top:3px solid var(--blue);padding-top:10px;font-size:15px}
+ol.steps b{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+.stats{display:flex;flex-wrap:wrap;gap:12px 32px}
+.stat{display:grid}
+.stat .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat .k{font-size:13.5px;color:var(--muted)}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 10px;border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+thead th{font-weight:600;border-bottom:2px solid var(--ink)}
+tbody tr.ours{background:var(--tint);font-weight:600}
+.tnote{font-size:13px;color:var(--muted)}
+pre{background:var(--code);border-radius:6px;padding:16px;overflow-x:auto;font:13px/1.55 "JetBrains Mono",ui-monospace,Menlo,monospace;margin:0;position:relative}
+.copy{justify-self:end;font:inherit;font-size:13px;background:none;border:1px solid var(--rule);color:var(--ink);border-radius:999px;padding:4px 12px;cursor:pointer}
+footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);font-size:13px;color:var(--muted);text-align:center}
+footer a{color:var(--muted)}
+a{color:var(--blue)}
+@media (max-width:520px){.authors{font-size:15.5px}h2{font-size:24px}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+  <h1><span class="name">DTDD</span>: Divergence-Triggered Dynamic Distillation for Reliable On-Policy Supervision</h1>
+  <div class="authors">
+    <span>Qijia He<sup>1,2</sup></span>,
+    <span>Zequn Li<sup>1</sup></span>,
+    <span>Spencer Luo<sup>1</sup></span>,
+    <span>Tianle Chen<sup>1,3</sup></span>,
+    <span>Pradyumna Narayana<sup>1</sup></span>,
+    <span>Zixian Ma<sup>2</sup></span>,
+    <span>Ranjay Krishna<sup>2</sup></span>,
+    <span>Lan Nie<sup>1</sup></span>,
+    <span>Sugato Basu<sup>1</sup></span>
+  </div>
+  <div class="affils">
+    <span><sup>1</sup><img src="static/images/google_g.png" alt="">Google</span>
+    <span><sup>2</sup><img src="static/images/uw.png" alt="">University of Washington</span>
+    <span><sup>3</sup><img src="static/images/bu.png" alt="">Boston University</span>
+  </div>
+  <div class="buttons">
+    <a class="btn" href="#" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6zM14 3.5V8h4.5"/></svg>Paper (coming soon)</a>
+    <a class="btn" href="#" aria-disabled="true"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7 3.6 3.6 0 0 1 .1-2.7s.8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>Code (coming soon)</a>
+    <a class="btn" href="#bibtex"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5zM8 9h8v1.5H8zm0 3h8v1.5H8zm0 3h5v1.5H8z"/></svg>BibTeX</a>
+  </div>
+</header>
+
+<section>
+  <figure>
+    <img src="static/images/fig_opd_failure_cases.png" alt="Three failure modes of on-policy distillation: slow learning from a base model, late collapse under long generation budgets, and compounding errors after a wrong tool call.">
+    <figcaption><b>Where local OPD supervision breaks.</b> (A) From a base initialization, dense token-level feedback teaches slowly. (B) Under long generation budgets, training becomes unstable late. (C) In multi-turn tool use, one wrong action changes every later observation, so errors and student–teacher divergence compound.</figcaption>
+  </figure>
+</section>
+
+<section class="abstract center">
+  <h2>Abstract</h2>
+  <p>On-policy distillation (OPD) provides dense token-level supervision on student rollouts, but this supervision can become unreliable when the student and teacher diverge, either because of a large initial policy gap or compounding errors in long-horizon reasoning and tool use. We introduce Divergence-Triggered Dynamic Distillation (DTDD), an adaptive OPD framework that routes supervision between standard OPD and teacher-generated recovery using segment-level student–teacher divergence. When divergence triggers an intervention during reasoning, the student prefix continues to receive standard OPD supervision, and the teacher generates a recovery suffix that the student learns through behavior cloning, an online SFT-style loss.</p>
+  <p>We evaluate DTDD in three regimes: long-horizon reasoning, distillation from a base initialization without offline SFT, and multi-turn agents, and compare alternative trigger designs and teacher-intervention rates. DTDD reduces the post-warm-up peak gradient norm by 8.6×, and from a base initialization reaches 21.3% held-out math accuracy in 2.6× fewer optimizer updates than OPD; both methods finish near 22%. It improves best-observed performance by 4.8 and 4.1 points on ALFWorld and agentic code. Segment-level triggers outperform token-level triggers, and behavior cloning trains teacher-generated recoveries better than the standard OPD objective. Across 23 experimental arms, takeover helps when the teacher substantially outperforms the OPD-trained student, can recover from student-visited states, provides recoveries the student can learn, and intervenes neither too much nor too little.</p>
+</section>
+
+<section>
+  <h2>Method</h2>
+  <figure>
+    <img src="static/images/fig_dtdd_pipeline.png" alt="DTDD pipeline: segment the student rollout, trigger at the first segment whose divergence crosses a threshold, let the teacher regenerate the rest, and train prefix and suffix with different losses.">
+  </figure>
+  <ol class="steps">
+    <li><b>A · Student rollout</b>The student samples a full response, split into fixed-length segments (128 tokens in our main runs).</li>
+    <li><b>B · Divergence trigger</b>Each segment's mean student–teacher divergence is compared with a threshold τ; the first crossing marks the intervention boundary.</li>
+    <li><b>C · Recovery</b>DTDD rewinds to the start of that segment and the teacher completes the response from the retained student prefix.</li>
+    <li><b>D · Role-split objective</b>The student prefix keeps standard OPD supervision; the teacher-written suffix is trained with behavior cloning. With no trigger, DTDD is exactly OPD.</li>
+  </ol>
+  <p class="center" style="margin-inline:auto">In multi-turn agents the same rule runs at action boundaries: the teacher replaces the triggering action and interaction continues from the resulting environment state.</p>
+</section>
+
+<section>
+  <h2>Results</h2>
+
+  <div class="prose">
+    <h3>Long-horizon stability</h3>
+    <p>With 15K- and 18K-token response budgets, OPD develops a sharp late gradient spike. DTDD removes it while keeping held-out accuracy within one point of OPD. Clipping the per-token OPD signal to [−1, 1] stabilizes training too, which we report as a control.</p>
+    <div class="stats">
+      <div class="stat"><span class="v">12.02 → 1.40</span><span class="k">peak gradient norm, 15K budget (8.6×)</span></div>
+      <div class="stat"><span class="v">12.81 → 1.84</span><span class="k">peak gradient norm, 18K budget (7.0×)</span></div>
+    </div>
+  </div>
+  <figure>
+    <img src="static/images/stability_main.png" alt="Gradient norm and truncated-rollout ratio over training for OPD and DTDD at 15K and 18K budgets.">
+    <figcaption>Long-horizon DAPO-Math-17K dynamics. DTDD (blue) suppresses the late OPD spikes (orange) at 15K and 18K.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>Warming up a base student online</h3>
+    <p>Distilling Qwen3-1.7B-Base from Qwen3-4B-Base-GRPO on DAPO-Math-17K, high-dose DTDD reaches the 21.3% reference level near update 70; OPD reaches it near update 180, and both later converge near 22%. The reliable effect is early acceleration, not a higher endpoint.</p>
+    <p>Against an offline pipeline that spends the same teacher budget on SFT first, DTDD reaches comparable accuracy in one online stage.</p>
+    <div class="stats">
+      <div class="stat"><span class="v">22.0 h vs 42.8 h</span><span class="k">serial time to ~21.5%, DTDD vs SFT → OPD</span></div>
+      <div class="stat"><span class="v">43M vs 95M</span><span class="k">teacher-written tokens</span></div>
+    </div>
+  </div>
+  <figure>
+    <img src="static/images/base_efficiency_main.png" alt="Held-out accuracy on AIME24, AIME25 and AMC23 over training for OPD and four DTDD configurations.">
+    <figcaption>Held-out accuracy for Qwen3-1.7B-Base ← Qwen3-4B-Base-GRPO on DAPO-Math-17K.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>Which design choice carries the effect</h3>
+    <p>We cross the trigger (segment-averaged divergence vs a single-token spike) with the teacher-suffix loss (behavior cloning vs the unified KD objective), and reproduce AdaSwitch with its published rule. Token-spike triggers fall back to the OPD baseline; training teacher suffixes with the KD objective is worse than no takeover. AdaSwitch comes closest, while spending 1.7× the teacher tokens per update.</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Trigger / method</th><th>Suffix loss</th><th>Step 60</th><th>80</th><th>100</th><th>120</th><th>Teacher tokens / update</th></tr></thead>
+      <tbody>
+        <tr><td>OPD</td><td>—</td><td>12.14</td><td>14.00</td><td>13.15</td><td>14.54</td><td>0</td></tr>
+        <tr class="ours"><td>DTDD (segment)</td><td>BC</td><td>20.32</td><td>21.47</td><td>21.08</td><td>20.83</td><td>0.52M</td></tr>
+        <tr><td>Token spike</td><td>KD</td><td>12.47</td><td>12.14</td><td>12.81</td><td>13.51</td><td>0.40M</td></tr>
+        <tr><td>Token spike</td><td>BC</td><td>13.19</td><td>13.07</td><td>13.26</td><td>16.79</td><td>0.43M</td></tr>
+        <tr><td>Segment</td><td>KD</td><td>5.78</td><td>7.80</td><td>8.04</td><td>10.23</td><td>0.67M</td></tr>
+        <tr><td>AdaSwitch (K = 3)</td><td>KD</td><td>18.16</td><td>19.57</td><td>18.68</td><td>19.95</td><td>0.86M</td></tr>
+        <tr><td>SFT → OPD</td><td>—</td><td>20.63</td><td>22.81</td><td>22.45</td><td>22.03</td><td>95M offline</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tnote">Held-out average@16 (%) over AIME 2024, AIME 2025 and AMC 2023. OPD and DTDD rows are two-seed means; other rows are single runs.</p>
+
+  <div class="prose">
+    <h3>Multi-turn agents</h3>
+    <p>On ALFWorld, takeover starts at 90% and falls to near zero as the student improves, then reactivates when discrepancy rises again near update 180. DTDD leads OPD at every matched checkpoint after update 200. In agentic code, a sparse 2.8% teacher-token dose improves all four evaluation splits.</p>
+    <div class="stats">
+      <div class="stat"><span class="v">76.49 → 81.32</span><span class="k">ALFWorld success, best observed (%)</span></div>
+      <div class="stat"><span class="v">36.49 → 40.59</span><span class="k">agentic code accuracy, best observed (%)</span></div>
+    </div>
+  </div>
+  <figure>
+    <img src="static/images/alfworld_takeover.png" alt="ALFWorld takeover rate and discrepancy over training.">
+    <figcaption>ALFWorld: takeover withdraws as the student aligns and returns when discrepancy rises.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3>When does takeover help?</h3>
+    <p>Across 23 arms in 13 settings, 19 follow one pattern: gains concentrate where plain OPD leaves more headroom below the teacher. The exceptions are explained by teacher validity (WebShop, where the teacher scores below OPD), student learnability, and intervention dose.</p>
+  </div>
+  <figure>
+    <img src="static/images/headroom_gate.png" alt="DTDD minus OPD against the headroom plain OPD leaves below its teacher, for 23 arms.">
+    <figcaption>DTDD minus OPD, averaged over matched checkpoints, against the headroom OPD leaves below its teacher. Ringed arms are analyzed by the validity, learnability and dose controls in the paper.</figcaption>
+  </figure>
+</section>
+
+<section id="bibtex">
+  <h2>BibTeX</h2>
+  <pre id="bib">@misc{he2026dtdd,
+  title  = {DTDD: Divergence-Triggered Dynamic Distillation for Reliable On-Policy Supervision},
+  author = {He, Qijia and Li, Zequn and Luo, Spencer and Chen, Tianle and Narayana, Pradyumna
+            and Ma, Zixian and Krishna, Ranjay and Nie, Lan and Basu, Sugato},
+  year   = {2026},
+  note   = {Preprint}
+}</pre>
+  <button class="copy" id="copybib" type="button">Copy</button>
+</section>
+
+<footer>This page is adapted from the <a href="https://nerfies.github.io/">Nerfies</a> project page template, licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</footer>
+</main>
+<script>
+document.getElementById('copybib').addEventListener('click',function(){
+  var b=this,t=document.getElementById('bib').textContent;
+  function done(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)}
+  function sel(){var r=document.createRange();r.selectNodeContents(document.getElementById('bib'));var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected – press Ctrl/Cmd+C'}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,sel)}else sel();
+});
+</script>
+</body>
+</html>
