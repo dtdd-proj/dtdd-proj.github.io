@@ -84,7 +84,7 @@ BODY = r"""
   <div class="affils">
     <span><sup>1</sup><img src="static/images/google_g.png" alt="">Google</span>
     <span><sup>2</sup><img src="static/images/uw.png" alt="">University of Washington</span>
-    <span><sup>3</sup><img src="static/images/bu.png" alt="">Boston University</span>
+    <span><sup>3</sup><img src="static/images/bu_monogram.png" alt="">Boston University</span>
   </div>
   <div class="buttons">
     <a class="btn" href="ARXIV" aria-disabled="ARXIV_OFF"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6zM14 3.5V8h4.5"/></svg>Paper (coming soon)</a>
