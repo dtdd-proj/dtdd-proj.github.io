@@ -19,7 +19,7 @@ button { font: inherit; cursor: pointer; }
 a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
 p { margin: 0; }
 h1, h2, h3, h4 { margin: 0; color: var(--ink); line-height: 1.2; }
-h1 { font: 600 48px/1.15 "Google Sans", "Noto Sans", sans-serif; text-wrap: balance; margin-bottom: 28px; }
+h1 { font: 600 42px/1.15 "Google Sans", "Noto Sans", sans-serif; text-wrap: balance; margin-bottom: 28px; }
 h2 { font-size: 32px; font-weight: 600; text-align: center; }
 h3 { font-size: 26px; font-weight: 600; text-align: center; }
 h4 { font-size: 20px; font-weight: 600; }
@@ -108,7 +108,7 @@ dialog[open] { display: flex; flex-direction: column; gap: 14px; }
 #viewer-description { font-size: 13px; color: var(--muted); }
 @media (max-width: 700px) {
   .hero { padding-top: 36px; }
-  h1 { font-size: 42px; }
+  h1 { font-size: 36px; }
   .publication-subtitle { font-size: 26px; }
   .authors { font-size: 17px; }
   .affiliations { font-size: 14px; gap: 8px 16px; }
@@ -120,7 +120,7 @@ dialog[open] { display: flex; flex-direction: column; gap: 14px; }
   .hero, .teaser, section > *, .abstract > * { width: calc(100% - 32px); }
   .section-heading { width: 100%; }
   .hero { padding: 30px 0 22px; }
-  h1 { font-size: 40px; }
+  h1 { font-size: 32px; }
   .publication-subtitle { font-size: 23px; margin-bottom: 22px; }
   .desktop-break { display: none; }
   .authors { font-size: 16px; line-height: 1.75; }
