@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="light">
   <title>DTDD: Divergence-Triggered Dynamic Distillation for Reliable On-Policy Supervision</title>
   <meta name="description" content="DTDD uses segment-level student–teacher divergence to route supervision: OPD on the student prefix, behavior cloning on the teacher recovery suffix.">
   <link rel="canonical" href="https://dtdd-proj.github.io/">
@@ -22,20 +22,16 @@
   <link rel="icon" href="static/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=JetBrains+Mono:wght@400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
   <link rel="stylesheet" href="static/site.css">
   <script src="static/site.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#method">Skip to the method</a>
-<nav class="site-nav" aria-label="Page navigation">
-  <a class="wordmark" href="#top">DTDD<span class="wordmark-dots" aria-hidden="true">●●<i>●</i></span></a>
-  <div><a href="#method">Method</a><a href="#results">Results</a><a href="#design">Design</a><a href="#headroom">When it helps</a><a href="#bibtex">Cite</a></div>
-</nav>
 <main id="top">
   <header class="hero">
-    <p class="eyebrow">On-policy learning · Teacher-guided recovery</p>
-    <h1><span class="name">DTDD</span>: Divergence-Triggered Dynamic Distillation for Reliable On-Policy Supervision</h1>
+    <h1>DTDD</h1>
+    <p class="publication-subtitle">Divergence-Triggered Dynamic Distillation<br class="desktop-break"> for Reliable On-Policy Supervision</p>
     <div class="authors">
       <span><a href="https://qijia-he.github.io/">Qijia He</a><sup>1,2,*</sup></span>,
       <span>Zequn Li<sup>1</sup></span>,
@@ -45,29 +41,17 @@
       <span><a href="https://zixianma.github.io/">Zixian Ma</a><sup>2</sup></span>,
       <span><a href="https://ranjaykrishna.com/index.html">Ranjay Krishna</a><sup>2</sup></span>,
       <span>Lan Nie<sup>1</sup></span>,
-      <span>Sugato Basu<sup>1</sup></span>
+      <span><a href="https://sites.google.com/site/sugatobasu/">Sugato Basu</a><sup>1</sup></span>
     </div>
     <div class="affiliations">
       <span><sup>1</sup><img src="static/images/google_g.png" width="330" height="330" alt="">Google</span>
       <span><sup>2</sup><img src="static/images/uw.png" width="330" height="228" alt="">University of Washington</span>
       <span><sup>3</sup><img src="static/images/bu_monogram.png" width="57" height="57" alt="">Boston University</span>
     </div>
-    <div class="resources"><span class="button unavailable" aria-disabled="true">Paper<span class="resource-status">Coming soon</span></span><span class="button unavailable" aria-disabled="true">Code<span class="resource-status">Coming soon</span></span><a class="button" href="#bibtex">BibTeX ↓</a></div>
-    <p class="hero-summary">Let the student learn on its own trajectories.<br class="desktop-break"> When local divergence becomes large, let the teacher show how to continue.</p>
+    <div class="resources"><span class="button unavailable" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6zM14 3.5V8h4.5"/></svg>Paper<span class="resource-status">(coming soon)</span></span><span class="button unavailable" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5 1 12l7 7 2-2-5-5 5-5zm8 0-2 2 5 5-5 5 2 2 7-7z"/></svg>Code<span class="resource-status">(coming soon)</span></span><a class="button" href="#bibtex"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11l3 3v15H5zM8 9h8v1.5H8zm0 3h8v1.5H8zm0 3h5v1.5H8z"/></svg>BibTeX</a></div>
   </header>
 
-  <div class="highlights" aria-label="Selected results relative to OPD">
-    <a href="#stability"><span class="metric">8.6×</span><strong>Lower gradient peak</strong><span>Long reasoning · 15K budget</span></a>
-    <a href="#efficiency"><span class="metric">2.6×</span><strong>Fewer optimizer updates</strong><span>Base student · to 21.3% math accuracy</span></a>
-    <a href="#agents"><span class="metric">+4.8 <small>pp</small></span><strong>ALFWorld success</strong><span>LoRA · best observed</span></a>
-    <a href="#agents"><span class="metric">+4.1 <small>pp</small></span><strong>Agentic code accuracy</strong><span>Four-split average · best observed</span></a>
-  </div>
-
-  <p class="highlight-note">Selected gains relative to OPD. pp = percentage points.</p>
-
-  <section id="method">
-    <div class="section-heading"><span class="section-number">01 / METHOD</span><h2>From local divergence to teacher recovery</h2></div>
-    <p class="section-intro">On-policy distillation (OPD) trains on student-generated trajectories using teacher feedback. DTDD adds a simple switch: <strong>keep OPD on the student prefix; learn a teacher-generated recovery suffix through behavior cloning</strong>, the usual cross-entropy loss on teacher tokens.</p>
+  <div class="teaser">
     <figure>
       <div class="figure-scroll" tabindex="0" role="region" aria-label="Reasoning pipeline: a student rollout is split into segments; the first high-divergence segment marks where the teacher regenerates the suffix; the prefix receives OPD and the suffix behavior cloning.">
         <a class="figure-link" href="static/images/fig_dtdd_pipeline.png" data-lightbox aria-label="Enlarge figure: Reasoning pipeline: a student rollout is split into segments; the first high-divergence segment marks where the teacher regenerates the suffix; the prefix receives OPD and the suffix behavior cloning.">
@@ -76,11 +60,24 @@
       </div>
       <figcaption>Reasoning realization of DTDD. The teacher recovers from the retained student prefix. <a href="static/images/fig_dtdd_pipeline.png" data-lightbox data-alt="Reasoning pipeline: a student rollout is split into segments; the first high-divergence segment marks where the teacher regenerates the suffix; the prefix receives OPD and the suffix behavior cloning." class="enlarge">View full size ↗</a><span class="swipe-hint">Swipe to explore the plot on mobile.</span></figcaption>
     </figure>
+  </div>
+
+  <section id="abstract" class="abstract">
+    <h2>Abstract</h2>
+    <div class="prose">
+      <p>On-policy distillation (OPD) provides dense token-level supervision on student rollouts, but this supervision can become unreliable when the student and teacher diverge, either because of a large initial policy gap or compounding errors in long-horizon reasoning and tool use. We introduce Divergence-Triggered Dynamic Distillation (DTDD), an adaptive OPD framework that routes supervision between standard OPD and teacher-generated recovery using segment-level student–teacher divergence. When divergence triggers an intervention during reasoning, the student prefix continues to receive standard OPD supervision, and the teacher generates a recovery suffix that the student learns through behavior cloning, an online SFT-style loss.</p>
+      <p>We evaluate DTDD in long-horizon reasoning, distillation from a base initialization without offline SFT, and multi-turn agents, and compare alternative trigger designs and teacher-intervention rates. DTDD reduces the post-warm-up peak gradient norm by 8.6×. From a base initialization, it reaches the 21.3% held-out math accuracy reference level in 2.6× fewer optimizer updates than OPD; both methods later reach around 22%. It improves best-observed performance by 4.8 and 4.1 points on ALFWorld with LoRA and agentic code. In the tested controls, segment-level triggers outperform token-level triggers, and behavior cloning trains teacher-generated recoveries better than applying the student-top-K OPD surrogate to those suffixes. Across 23 experimental arms, teacher headroom is a useful empirical diagnostic, with teacher validity, student learnability, and intervention dose explaining the principal boundary cases.</p>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="section-heading"><h2>Method</h2></div>
+    <p class="section-intro">On-policy distillation (OPD) trains on student-generated trajectories using teacher feedback. DTDD adds a simple switch: <strong>keep OPD on the student prefix; learn a teacher-generated recovery suffix through behavior cloning</strong>, the usual cross-entropy loss on teacher tokens.</p>
     <ol class="steps">
-      <li><span class="step-label">A · Roll out</span><strong>The student tries first.</strong><p>Generate a response and divide it into fixed-length token windows.</p></li>
-      <li><span class="step-label">B · Detect</span><strong>Find the first divergent window.</strong><p>Average the student–teacher log-probability gap within each window and compare it with a threshold.</p></li>
-      <li><span class="step-label">C · Recover</span><strong>The teacher continues.</strong><p>Retain the student prefix and regenerate from the start of the triggering window.</p></li>
-      <li><span class="step-label">D · Learn</span><strong>Match supervision to its source.</strong><p>OPD trains the prefix; cross-entropy trains the recovery suffix. No trigger means ordinary OPD.</p></li>
+      <li><strong>A. Student rollout.</strong> Generate a response and divide it into fixed-length token windows.</li>
+      <li><strong>B. Divergence trigger.</strong> Average the student–teacher log-probability gap within each window and compare it with a threshold.</li>
+      <li><strong>C. Teacher recovery.</strong> Retain the student prefix and regenerate from the start of the triggering window.</li>
+      <li><strong>D. Role-split training.</strong> OPD trains the prefix; cross-entropy trains the recovery suffix. No trigger means ordinary OPD.</li>
     </ol>
     <details>
       <summary>How does this work for agents?</summary>
@@ -100,14 +97,14 @@
   </section>
 
   <section id="results">
-    <div class="section-heading"><span class="section-number">02 / RESULTS</span><h2>Stability, faster learning, and multi-turn agents</h2></div>
+    <div class="section-heading"><h2>Experimental Results</h2></div>
     <p class="section-intro">We study when teacher recovery stabilizes training, accelerates learning from a base initialization, and helps interactive agents.</p>
 
     <article id="stability" class="result">
-      <div class="result-title"><span class="result-index">01</span><h3>Suppress late instability in long reasoning</h3></div>
+      <h3>Long-horizon stability</h3>
       <p class="setting"><b>Student</b> R1-Distill-1.5B <span>·</span> <b>Teacher</b> JustRL-1.5B <span>·</span> <b>Data</b> DAPO-Math-17K</p>
       <p>With 15K- and 18K-token response budgets, DTDD suppresses the late gradient spikes seen in OPD while keeping held-out accuracy within one percentage point.</p>
-      <div class="inline-stats"><div><strong>12.02 → 1.40</strong><span>Peak gradient norm · 15K</span></div><div><strong>12.81 → 1.84</strong><span>Peak gradient norm · 18K</span></div></div>
+      <p>Peak gradient norm decreases from <strong>12.02 to 1.40 at 15K</strong> and from <strong>12.81 to 1.84 at 18K</strong>.</p>
       <figure>
       <div class="figure-scroll" tabindex="0" role="region" aria-label="OPD and DTDD gradient norm and truncated-rollout ratio over training, grouped by 15K and 18K response budgets.">
         <a class="figure-link" href="static/images/stability_main.png" data-lightbox aria-label="Enlarge figure: OPD and DTDD gradient norm and truncated-rollout ratio over training, grouped by 15K and 18K response budgets.">
@@ -120,7 +117,7 @@
     </article>
 
     <article id="efficiency" class="result">
-      <div class="result-title"><span class="result-index">02</span><h3>Learn earlier from a base initialization</h3></div>
+      <h3>Learning from a base initialization</h3>
       <p class="setting"><b>Student</b> Qwen3-1.7B-Base <span>·</span> <b>Teacher</b> Qwen3-4B-Base-GRPO <span>·</span> <b>Data</b> DAPO-Math-17K</p>
       <p>With frequent teacher intervention, DTDD reaches the 21.3% held-out accuracy reference level near update 70, compared with approximately 180 for direct OPD. Both later reach around 22%: the gain is in how early the student learns.</p>
       <figure>
@@ -131,19 +128,19 @@
       </div>
       <figcaption>Accuracy on AIME 2024, AIME 2025, and AMC 2023, averaged across benchmarks using average@16 evaluation. <a href="static/images/base_efficiency_main.png" data-lightbox data-alt="Held-out math accuracy over training for OPD and DTDD at different window sizes and intervention levels." class="enlarge">View full size ↗</a><span class="swipe-hint">Swipe to explore the plot on mobile.</span></figcaption>
     </figure>
-      <div class="cost-comparison">
-        <div><span class="eyebrow">A separate comparison: online vs offline supervision</span><h4>One training stage, no offline SFT pipeline</h4><p>DTDD reaches comparable accuracy with fewer teacher-written tokens and less measured serial time than generating a teacher dataset, running SFT, and then training with OPD.</p></div>
-        <div class="cost-values"><div><strong>22.0 h <em>vs</em> 42.8 h</strong><span>DTDD vs the offline pipeline</span></div><div><strong>43M <em>vs</em> 95M</strong><span>Teacher-written tokens</span></div></div>
-      </div>
+      <h4>One training stage, no offline SFT pipeline</h4>
+      <p>DTDD reaches comparable accuracy with fewer teacher-written tokens and less measured serial time than generating a teacher dataset, running SFT, and then training with OPD: <strong>22.0 versus 42.8 hours</strong> and <strong>43M versus 95M teacher-written tokens</strong>.</p>
       <details><summary>What is being compared?</summary><div class="detail-content prose"><p>The 2.6× comparison counts optimizer updates against direct OPD, not elapsed time. The serial-time comparison is a separate run: DTDD reaches 21.34% at update 80 in 22.0 hours; the offline SFT-then-OPD pipeline reaches 21.55% at update 20 in approximately 42.8 hours, including data generation, SFT, checkpoint merging, and OPD.</p><p>The offline stages use A40 and A100 GPUs; this DTDD run uses four L40S GPUs. These are measured pipeline times, not hardware-normalized compute savings: the corresponding totals are approximately 66 and 88 GPU-hours. The 95M and 43M figures count teacher-written tokens, not teacher scoring of student tokens.</p><p>The figure compares different token-window sizes and intervention controllers. Its fixed-threshold control starts around 25% takeover and adapts thereafter; it is not a constant 25% rate. The reasoning implementation generates the full student response before choosing the teacher recovery boundary, so takeover does not save student rollout computation.</p></div></details>
     </article>
 
     <article id="agents" class="result">
-      <div class="result-title"><span class="result-index">03</span><h3>Extend recovery to interactive agents</h3></div>
-      <div class="agent-grid">
-        <div class="agent-result"><span class="eyebrow">ALFWorld · LoRA</span><h4>76.49% → 81.32%</h4><p>Best-observed average success over the seen and unseen splits.</p><p class="setting"><b>Student</b> Qwen2.5-3B-Instruct<br><b>Teacher</b> GiGPO-7B</p></div>
-        <div class="agent-result"><span class="eyebrow">Agentic code</span><h4>36.49% → 40.59%</h4><p>Best-observed accuracy averaged across four evaluation splits.</p><p class="setting"><b>Student</b> Qwen3-1.7B-SFT<br><b>Teacher</b> DemyAgent-GRPO-4B<br><b>Data</b> Open-AgentRL-30K, code subset</p></div>
-      </div>
+      <h3>Multi-turn agents</h3>
+      <h4>ALFWorld with LoRA</h4>
+      <p class="setting"><b>Student</b> Qwen2.5-3B-Instruct <span>·</span> <b>Teacher</b> GiGPO-7B</p>
+      <p>Best-observed average success over the seen and unseen splits increases from <strong>76.49% to 81.32%</strong>.</p>
+      <h4>Agentic code</h4>
+      <p class="setting"><b>Student</b> Qwen3-1.7B-SFT <span>·</span> <b>Teacher</b> DemyAgent-GRPO-4B <span>·</span> <b>Data</b> Open-AgentRL-30K, code subset</p>
+      <p>Best-observed accuracy averaged across four evaluation splits increases from <strong>36.49% to 40.59%</strong>.</p>
       <p>In ALFWorld, takeover falls from about 90% to near zero as training progresses, then reactivates around update 180. In agentic code, a sparse 2.8% teacher-token share improves all four splits at the selected best checkpoints.</p>
       <figure>
       <div class="figure-scroll" tabindex="0" role="region" aria-label="ALFWorld LoRA takeover dynamics: intervention declines as training progresses and rises again around update 180.">
@@ -158,7 +155,7 @@
   </section>
 
   <section id="design">
-    <div class="section-heading"><span class="section-number">03 / DESIGN CONTROLS</span><h2>Which trigger? Which teacher-suffix loss?</h2></div>
+    <div class="section-heading"><h2>Design Controls</h2></div>
     <p class="section-intro">We vary two choices: whether takeover is triggered by a <strong>segment average or a token spike</strong>, and whether teacher-written tokens receive <strong>cross-entropy or the OPD surrogate</strong>. The segment-triggered, cross-entropy combination performs best among the tested online variants at updates 60–120.</p>
     <div class="table-scroll" role="region" aria-label="Trigger and loss controls at update 120" tabindex="0">
       <table class="factorial"><caption>Held-out math accuracy (%) at update 120</caption><thead><tr><th scope="col">Trigger</th><th scope="col">Teacher suffix: cross-entropy</th><th scope="col">Teacher suffix: OPD surrogate</th></tr></thead><tbody><tr class="ours"><th scope="row">Segment average</th><td><strong>20.83 · DTDD</strong></td><td>10.23</td></tr><tr><th scope="row">Token spike</th><td>16.79</td><td>13.51</td></tr></tbody></table>
@@ -181,7 +178,7 @@
   </section>
 
   <section id="headroom">
-    <div class="section-heading"><span class="section-number">04 / WHEN TAKEOVER HELPS</span><h2>Teacher headroom is a useful diagnostic</h2></div>
+    <div class="section-heading"><h2>When Does Takeover Help?</h2></div>
     <p class="section-intro">Across 23 arms in 13 settings, 19 follow a common pattern: takeover tends to help when the teacher still outperforms the OPD-trained student. That gap is informative, but a larger gap does not guarantee a larger gain.</p>
     <figure>
       <div class="figure-scroll" tabindex="0" role="region" aria-label="Average DTDD minus OPD performance versus OPD-to-teacher headroom across 23 experimental arms, with boundary cases highlighted.">
@@ -191,19 +188,12 @@
       </div>
       <figcaption>Each point is an experimental arm. Gains are averaged over shared checkpoints; they are not the best-observed scores reported above. <a href="static/images/headroom_gate.png" data-lightbox data-alt="Average DTDD minus OPD performance versus OPD-to-teacher headroom across 23 experimental arms, with boundary cases highlighted." class="enlarge">View full size ↗</a><span class="swipe-hint">Swipe to explore the plot on mobile.</span></figcaption>
     </figure>
-    <div class="conditions">
-      <div><span>01</span><h3>A valid teacher</h3><p>Can the teacher recover in this environment? In rebuilt WebShop, the task-specific teacher falls below OPD, making takeover unhelpful.</p></div>
-      <div><span>02</span><h3>A learnable recovery</h3><p>Can the student learn the continuation? A 0.5B ALFWorld student does not reliably benefit despite a large gap to its 7B teacher.</p></div>
-      <div><span>03</span><h3>An appropriate dose</h3><p>How much teacher text is useful? Base-model math benefits from frequent intervention; excessive intervention hurts agentic code.</p></div>
-    </div>
+    <ul class="conditions">
+      <li><strong>A valid teacher.</strong> Can the teacher recover in this environment? In rebuilt WebShop, the task-specific teacher falls below OPD, making takeover unhelpful.</li>
+      <li><strong>A learnable recovery.</strong> Can the student learn the continuation? A 0.5B ALFWorld student does not reliably benefit despite a large gap to its 7B teacher.</li>
+      <li><strong>An appropriate dose.</strong> How much teacher text is useful? Base-model math benefits from frequent intervention; excessive intervention hurts agentic code.</li>
+    </ul>
     <details><summary>How to read the headroom plot</summary><div class="detail-content prose"><p>The horizontal axis is normalized teacher headroom, 1 − (OPD endpoint performance / teacher performance). The vertical axis is the DTDD-minus-OPD difference averaged over shared checkpoints. This is a retrospective empirical diagnostic, not a calibrated rule for choosing a threshold or predicting gains.</p><p>The central mechanism is online routing: segment-level divergence determines where teacher recovery enters training. In the base-student experiments, early accuracy gains come from sufficient coherent teacher supervision.</p></div></details>
-  </section>
-
-  <section id="abstract">
-    <details class="abstract"><summary>Read the abstract</summary><div class="detail-content prose">
-      <p>On-policy distillation (OPD) provides dense token-level supervision on student rollouts, but this supervision can become unreliable when the student and teacher diverge, either because of a large initial policy gap or compounding errors in long-horizon reasoning and tool use. We introduce Divergence-Triggered Dynamic Distillation (DTDD), an adaptive OPD framework that routes supervision between standard OPD and teacher-generated recovery using segment-level student–teacher divergence. When divergence triggers an intervention during reasoning, the student prefix continues to receive standard OPD supervision, and the teacher generates a recovery suffix that the student learns through behavior cloning, an online SFT-style loss.</p>
-      <p>We evaluate DTDD in long-horizon reasoning, distillation from a base initialization without offline SFT, and multi-turn agents, and compare alternative trigger designs and teacher-intervention rates. DTDD reduces the post-warm-up peak gradient norm by 8.6×. From a base initialization, it reaches the 21.3% held-out math accuracy reference level in 2.6× fewer optimizer updates than OPD; both methods later reach around 22%. It improves best-observed performance by 4.8 and 4.1 points on ALFWorld with LoRA and agentic code. In the tested controls, segment-level triggers outperform token-level triggers, and behavior cloning trains teacher-generated recoveries better than applying the student-top-K OPD surrogate to those suffixes. Across 23 experimental arms, teacher headroom is a useful empirical diagnostic, with teacher validity, student learnability, and intervention dose explaining the principal boundary cases.</p>
-    </div></details>
   </section>
 
   <section id="bibtex">

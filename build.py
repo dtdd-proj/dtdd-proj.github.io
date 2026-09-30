@@ -50,11 +50,16 @@ def figure(key):
 
 
 def resource(label, url):
+    paths = {
+        "Paper": "M6 2h9l5 5v15H6zM14 3.5V8h4.5",
+        "Code": "M8 5 1 12l7 7 2-2-5-5 5-5zm8 0-2 2 5 5-5 5 2 2 7-7z",
+    }
+    icon = f'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="{paths.get(label, paths["Paper"])}"/></svg>'
     if not url:
-        return f'<span class="button unavailable" aria-disabled="true">{label}<span class="resource-status">Coming soon</span></span>'
+        return f'<span class="button unavailable" aria-disabled="true">{icon}{label}<span class="resource-status">(coming soon)</span></span>'
     if not url.startswith("https://"):
         raise ValueError(f"{label} URL must be an HTTPS URL")
-    return f'<a class="button" href="{escape(url, quote=True)}">{label} ↗</a>'
+    return f'<a class="button" href="{escape(url, quote=True)}">{icon}{label}</a>'
 
 
 def render():

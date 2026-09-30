@@ -69,6 +69,13 @@ class SiteTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             build.resource('Paper', '#')
 
+    def test_classic_project_layout_and_author_link(self):
+        self.assertNotIn('<nav', self.html)
+        self.assertNotIn('class="highlights"', self.html)
+        self.assertIn('<section id="abstract" class="abstract">', self.html)
+        self.assertLess(self.html.index('id="abstract"'), self.html.index('id="method"'))
+        self.assertIn('href="https://sites.google.com/site/sugatobasu/">Sugato Basu</a>', self.html)
+
 
 if __name__ == '__main__':
     unittest.main()
