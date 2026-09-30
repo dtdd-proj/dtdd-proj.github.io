@@ -86,6 +86,11 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn('@misc{', self.html)
         self.assertNotIn('id="copybib"', self.html)
 
+    def test_full_paper_title_is_one_heading(self):
+        self.assertIn(f'<h1>{build.TITLE}</h1>', self.html)
+        self.assertNotIn('<h1>DTDD</h1>', self.html)
+        self.assertNotIn('class="publication-subtitle"', self.html)
+
 
 if __name__ == '__main__':
     unittest.main()
