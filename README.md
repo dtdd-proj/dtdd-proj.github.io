@@ -10,6 +10,7 @@ in `build.py`. Run `python3 build.py` to regenerate `index.html` and the ignored
 local `preview.html`. The build uses only the Python standard library.
 
 Run `python3 build.py --check` to check that the generated page is current.
+Run `python3 -m unittest discover -s tests -v` for links, assets, and metadata checks.
 For a local preview, run `python3 -m http.server 8000` and open
 http://localhost:8000/ . Commit both the source changes and `index.html`.
 

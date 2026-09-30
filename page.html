@@ -63,6 +63,8 @@
     <a href="#agents"><span class="metric">+4.1 <small>pp</small></span><strong>Agentic code accuracy</strong><span>Four-split average · best observed</span></a>
   </div>
 
+  <p class="highlight-note">Selected gains relative to OPD. pp = percentage points.</p>
+
   <section id="method">
     <div class="section-heading"><span class="section-number">01 / METHOD</span><h2>From local divergence to teacher recovery</h2></div>
     <p class="section-intro">On-policy distillation (OPD) trains on student-generated trajectories using teacher feedback. DTDD adds a simple switch: <strong>keep OPD on the student prefix; learn a teacher-generated recovery suffix through behavior cloning</strong>, the usual cross-entropy loss on teacher tokens.</p>
