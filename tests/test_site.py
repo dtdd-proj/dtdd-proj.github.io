@@ -81,6 +81,11 @@ class SiteTests(unittest.TestCase):
         self.assertIn('href="https://www.linkedin.com/in/lanie/">Lan Nie</a>', self.html)
         self.assertIn('<span class="author-name">Spencer Luo</span>', self.html)
 
+    def test_citation_placeholder(self):
+        self.assertIn('<pre id="bib">TBD</pre>', self.html)
+        self.assertNotIn('@misc{', self.html)
+        self.assertNotIn('id="copybib"', self.html)
+
 
 if __name__ == '__main__':
     unittest.main()

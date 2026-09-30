@@ -45,7 +45,7 @@ viewer.addEventListener("close", () => {
   if (opener) opener.focus({preventScroll: true});
 });
 
-document.getElementById("copybib").addEventListener("click", async function () {
+document.getElementById("copybib")?.addEventListener("click", async function () {
   const bib = document.getElementById("bib");
   const status = document.getElementById("copy-status");
   try {
