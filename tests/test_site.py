@@ -76,6 +76,11 @@ class SiteTests(unittest.TestCase):
         self.assertLess(self.html.index('id="abstract"'), self.html.index('id="method"'))
         self.assertIn('href="https://sites.google.com/site/sugatobasu/">Sugato Basu</a>', self.html)
 
+    def test_author_links_and_nonclickable_name(self):
+        self.assertIn('href="https://www.linkedin.com/in/zequn-li-2017/">Zequn Li</a>', self.html)
+        self.assertIn('href="https://www.linkedin.com/in/lanie/">Lan Nie</a>', self.html)
+        self.assertIn('<span class="author-name">Spencer Luo</span>', self.html)
+
 
 if __name__ == '__main__':
     unittest.main()
