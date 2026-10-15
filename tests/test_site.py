@@ -81,10 +81,11 @@ class SiteTests(unittest.TestCase):
         self.assertIn('href="https://www.linkedin.com/in/lanie/">Lan Nie</a>', self.html)
         self.assertIn('<span class="author-name">Spencer Luo</span>', self.html)
 
-    def test_citation_placeholder(self):
-        self.assertIn('<pre id="bib">TBD</pre>', self.html)
-        self.assertNotIn('@misc{', self.html)
-        self.assertNotIn('id="copybib"', self.html)
+    def test_citation(self):
+        self.assertIn('@misc{he2026dtdddivergencetriggereddynamicdistillation,', self.html)
+        self.assertIn('eprint={2610.19302}', self.html)
+        self.assertIn('url={https://arxiv.org/abs/2610.19302}', self.html)
+        self.assertIn('id="copybib"', self.html)
 
     def test_full_paper_title_is_one_heading(self):
         self.assertIn(f'<h1>{build.TITLE}</h1>', self.html)
