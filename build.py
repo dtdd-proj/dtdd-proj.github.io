@@ -10,8 +10,8 @@ SITE_URL = "https://dtdd-proj.github.io/"
 TITLE = "DTDD: Divergence-Triggered Dynamic Distillation for Reliable On-Policy Supervision"
 DESCRIPTION = ("DTDD uses segment-level student–teacher divergence to route supervision: "
                "OPD on the student prefix, behavior cloning on the teacher recovery suffix.")
-ARXIV = ""  # Set the public paper URL when available.
-CODE = ""   # Set the implementation repository URL when available.
+ARXIV = "https://arxiv.org/abs/2610.19302"
+CODE = "https://github.com/Qijia-He/dtdd"
 
 FIGURES = {
     "method": ("fig_dtdd_pipeline.png", 2000, 730,
