@@ -25,7 +25,7 @@ h3 { font-size: 26px; font-weight: 600; text-align: center; }
 h4 { font-size: 20px; font-weight: 600; }
 strong, b { font-weight: 600; color: var(--ink); }
 sup { font-size: .68em; }
-.hero { width: min(1200px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 32px; text-align: center; }
+.hero { width: min(1400px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 32px; text-align: center; }
 .publication-subtitle { font-size: 32px; line-height: 1.3; margin: 12px 0 26px; text-wrap: balance; }
 .authors { font: 20px/1.7 "Google Sans", "Noto Sans", sans-serif; text-wrap: balance; }
 .authors span { white-space: nowrap; }
@@ -106,6 +106,9 @@ dialog[open] { display: flex; flex-direction: column; gap: 14px; }
 .viewer-canvas.zoomed { display: block; }
 .viewer-canvas.zoomed img { width: var(--zoom-width); margin: 0; }
 #viewer-description { font-size: 13px; color: var(--muted); }
+@media (min-width: 1400px) {
+  .authors { white-space: nowrap; }
+}
 @media (max-width: 700px) {
   .hero { padding-top: 36px; }
   h1 { font-size: 36px; }
