@@ -25,7 +25,7 @@ h3 { font-size: 26px; font-weight: 600; text-align: center; }
 h4 { font-size: 20px; font-weight: 600; }
 strong, b { font-weight: 600; color: var(--ink); }
 sup { font-size: .68em; }
-.hero { width: min(960px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 32px; text-align: center; }
+.hero { width: min(1200px, calc(100% - 48px)); margin: 0 auto; padding: 48px 0 32px; text-align: center; }
 .publication-subtitle { font-size: 32px; line-height: 1.3; margin: 12px 0 26px; text-wrap: balance; }
 .authors { font: 20px/1.7 "Google Sans", "Noto Sans", sans-serif; text-wrap: balance; }
 .authors span { white-space: nowrap; }
@@ -39,9 +39,9 @@ sup { font-size: .68em; }
 .button:not(.unavailable):hover { background: #292929; color: #fff; text-decoration: none; }
 .unavailable { background: #575757; cursor: default; }
 .resource-status { font-size: 12px; }
-.teaser { width: min(960px, calc(100% - 48px)); margin: 24px auto 0; }
+.teaser { width: min(1200px, calc(100% - 48px)); margin: 24px auto 0; }
 section { display: flex; flex-direction: column; align-items: center; gap: 22px; padding-top: 52px; min-width: 0; }
-section > * { width: min(960px, calc(100% - 48px)); min-width: 0; }
+section > * { width: min(1200px, calc(100% - 48px)); min-width: 0; }
 .section-heading { width: 100%; background: var(--soft); padding: 27px 24px; margin-bottom: 12px; }
 .section-intro { text-align: justify; }
 .abstract { padding: 48px 0 4px; }
@@ -90,7 +90,7 @@ tbody th { font-weight: 400; }
 .copy:hover, .viewer-toolbar button:hover, .viewer-toolbar a:hover { background: var(--soft); }
 pre { font: 13px/1.65 "JetBrains Mono", ui-monospace, monospace; margin: 0; padding: 22px; background: var(--soft); overflow-x: auto; }
 footer { margin-top: 52px; padding: 32px 24px 42px; background: #fafafa; font-size: 13px; text-align: center; line-height: 1.9; }
-footer p { max-width: 960px; margin-inline: auto; }
+footer p { max-width: 1200px; margin-inline: auto; }
 footer .attribution { margin-top: 14px; }
 .skip-link { position: fixed; top: 8px; left: 12px; z-index: 10; padding: 8px 14px; background: var(--paper); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
