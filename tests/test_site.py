@@ -41,7 +41,7 @@ class SiteTests(unittest.TestCase):
                 if value.startswith('#'):
                     self.assertIn(value[1:], ids)
                 elif not urlsplit(value).scheme:
-                    self.assertTrue((ROOT / urlsplit(value).path).is_file(), value)
+                    self.assertTrue((ROOT / value).is_file(), value)
 
     def test_resource_placeholders_are_not_links(self):
         for tag, attrs in self.page.elements:
